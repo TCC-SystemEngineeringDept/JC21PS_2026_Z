@@ -21,7 +21,23 @@ public class ParticipantListRepository {
          * TODO ➊ 初期表示情報を取得するSQLを完成させる。
          */
         String sql = """
-
+                SELECT
+                    participant.activity_id,
+                    usr.user_id,
+                    activity.activity_name,
+                    usr.user_name
+                FROM
+                    trn_participant AS participant
+                INNER JOIN
+                    mst_user AS usr
+                ON
+                    participant.user_id = usr.user_id
+                INNER JOIN
+                    trn_activity AS activity
+                ON
+                    participant.activity_id = activity.activity_id
+                WHERE
+                    participant.activity_id = ?
                 """;
 
         List<Map<String, Object>> participantList = jdbcTemplate.queryForList(sql,
@@ -38,7 +54,8 @@ public class ParticipantListRepository {
 
             // responseEntityに値をセットする
             ParticipantListEntity responseEntity = new ParticipantListEntity();
-            responseEntity.setActivityId((String) participant.get("activity_id"));
+            // activity_idはINT型のため、String型に変換
+            responseEntity.setActivityId(String.valueOf(participant.get("activity_id")));
             responseEntity.setUserId((String) participant.get("user_id"));
             responseEntity.setActivityName((String) participant.get("activity_name"));
             responseEntity.setUserName((String) participant.get("user_name"));
@@ -56,7 +73,12 @@ public class ParticipantListRepository {
          * TODO ➋ 活動名を取得するSQLを完成させる。
          */
         String sql = """
-
+                SELECT
+                    activity_name
+                FROM
+                    trn_activity
+                WHERE
+                    activity_id = ?
                 """;
 
         List<Map<String, Object>> actNameList = jdbcTemplate.queryForList(sql, paramEntity.getActivityId());
