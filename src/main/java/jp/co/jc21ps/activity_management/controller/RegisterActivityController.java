@@ -80,6 +80,8 @@ public class RegisterActivityController {
         /*
          * TODO ➊ セッションからuserIdを取得する
          */
+        SessionDto sessionDto = commonService.getSessionDto(session);
+        String leaderClubId = sessionDto.getClubId();
 
         // バリデーションエラー
         if (bindingResult.hasErrors()) {
@@ -102,6 +104,14 @@ public class RegisterActivityController {
             /*
              * TODO ➋ activitySaveDtoに、パラメータをsetする。
              */
+            activitySaveDto.setActivityName(paramForm.getActivityName());
+            activitySaveDto.setActivityDate(paramForm.getActivityDate());
+            activitySaveDto.setActivityPlace(paramForm.getActivityPlace());
+            activitySaveDto.setActivityStartTime(paramForm.getActivityStartTime());
+            activitySaveDto.setActivityEndTime(paramForm.getActivityEndTime());
+            activitySaveDto.setActivityDescription(paramForm.getActivityDescription());
+            activitySaveDto.setMaxParticipant(paramForm.getMaxParticipant());
+            activitySaveDto.setClubId(leaderClubId);
 
             // サービスからinsertメソッドを呼び出す
             String resultMessageKey = registerActivityService.insertActivity(activitySaveDto);
