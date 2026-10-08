@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -83,19 +82,6 @@ public class JoinRequestController {
         /*
          * TODO ➊ 初期表示情報取得結果に応じて、以下の条件文を完成させる。
          */
-        if (responseForm.isEmpty()) {
-            // 申請できる部署がない場合のメッセージ
-            String notRequestClubMessage = messageSource.getMessage("notRequestClubMessage", null,
-                    Locale.getDefault());
-            mav.addObject("notRequestClubMessage", notRequestClubMessage);
-        } else {
-            mav.addObject("joinRequestSaveForm", responseForm);
-        }
-
-        // 部員登録申請成功のメッセージ
-        if (!ObjectUtils.isEmpty(paramForm.getMessage())) {
-            mav.addObject("joinRequestCompleteMessage", paramForm.getMessage());
-        }
 
         mav.addObject("leaderClubId", leaderClubId);
 
@@ -132,19 +118,6 @@ public class JoinRequestController {
             /*
              * TODO ➋ インサートの成功、失敗に応じて、処理を変更する。
              */
-            if (result) {
-                // messages.propertiesからメッセージを取得
-                String joinRequestCompleteMessage = messageSource.getMessage("joinRequestCompleteMessage", null,
-                        Locale.getDefault());
-                paramForm.setMessage(joinRequestCompleteMessage);
-
-                // リダイレクト先に登録申請成功のメッセージを渡す
-                redirectAttributes.addFlashAttribute("joinOkMessage", paramForm.getMessage());
-                mav.setViewName("redirect:/joinRequest");
-            } else {
-                // 登録に失敗した場合、エラー画面に遷移
-                mav.setViewName("error");
-            }
 
         } catch (Exception e) {
             mav.setViewName("error");

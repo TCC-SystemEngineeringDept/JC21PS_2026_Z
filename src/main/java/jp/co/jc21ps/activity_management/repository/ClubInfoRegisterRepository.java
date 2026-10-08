@@ -19,13 +19,7 @@ public class ClubInfoRegisterRepository {
          * TODO ➊ 初期表示情報を取得するSQLを完成させる。
          */
         String sql = """
-                SELECT
-                    club_name,
-                    club_description
-                FROM
-                    mst_club
-                WHERE
-                    club_id = ?
+
                 """;
 
         Map<String, Object> result = jdbcTemplate.queryForMap(sql, paramEntity.getLeaderClubId());
@@ -44,12 +38,7 @@ public class ClubInfoRegisterRepository {
          * TODO ➋ 部署情報をUPDATEするSQLを完成させる。
          */
         String sql = """
-                UPDATE
-                    mst_club
-                SET
-                    club_description = ?
-                WHERE
-                    club_id = ?
+
                 """;
 
         // entityから値をget
